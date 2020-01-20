@@ -10,7 +10,7 @@ namespace Vidly.ViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Driving Licence")] //we used [required] attribut in identity model to override the conventions of EF while migrating the DB! but here we're working on the ViewModel, These are two separate things!
+        [Display(Name = "Driving Licence")] 
         public string DrivingLicense { get; set; }
 
         [Required]
