@@ -13,8 +13,7 @@ namespace Vidly.Models
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
-        //Let's say we want to create a page where we randomly pick a movie and render its details, assuming that this page would be :
-        // /movies/random  --> we need to create a controller called Moviescontroller with an action called random!
+      
         [Display(Name = "Release Date")]
         public  DateTime ReleaseDate { get; set; }
 
@@ -29,7 +28,7 @@ namespace Vidly.Models
        
         [Display(Name = "Genre")]
         [Required]
-        public byte GenreId { get; set; } //We placed the [Required] annotation here so solve the error. EF doesn't see any difference.
+        public byte GenreId { get; set; } 
 
         public byte NumberAvailable { get; set; }
     }
