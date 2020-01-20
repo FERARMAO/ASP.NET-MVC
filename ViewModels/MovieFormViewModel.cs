@@ -11,7 +11,7 @@ namespace Vidly.ViewModels
     {
         public IEnumerable<Genre> Genres { get; set; }
 
-        public int? Id { get; set; } //We put those properties of Movie here to make them nullable to remove the initial values in the form. This way, their initial value will be null, and our form will not be pre-populated with (1jan0001 & 0).
+        public int? Id { get; set; } 
         
         [Required]
         [StringLength(255)]
@@ -27,7 +27,7 @@ namespace Vidly.ViewModels
         public byte? NumberInStock { get; set; }
 
         [Display(Name = "Genre")]
-        [Required] //i put required here because it's nullable here (byte?), so it's not implicitly required anymore.
+        [Required] 
         public byte? GenreId { get; set; }
 
         public string Title
@@ -40,7 +40,7 @@ namespace Vidly.ViewModels
 
         public MovieFormViewModel()
         {
-            Id = 0; //This is to make sure that in our MovieForm, the Movie.Id hidden field is populated.
+            Id = 0; 
         }
         public MovieFormViewModel(Movie movie) //To make the code cleaner.
         {
