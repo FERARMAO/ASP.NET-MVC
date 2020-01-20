@@ -1,0 +1,72 @@
+﻿body{
+    color: #84A39F
+}
+
+.navbar-inverse {
+    background-color: #151515;
+    border-color: #FDC1AE
+}
+
+.navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 2px;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #FFF20B;
+    font-weight: bold;
+}
+
+    .navbar-inverse .navbar-brand:hover {
+        color: #D5F24A;
+    }
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #F1FAFD;
+    border-bottom: 3px solid transparent;
+    transition: border-bottom ease-in-out .15s;
+    padding-bottom: 10px;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+        border-bottom: 3px solid #007bff;
+        color: #fff;
+    }
+
+.form-control {
+    box-shadow: none;
+    height: 41px;
+    width: 400px;
+    box-shadow: none;
+    transition: border-color ease-in-out .10s, box-shadow ease-in-out .15s;
+    border-radius: 7px;
+}
+
+.form-control:focus {
+        box-shadow: none;
+        border: 2px solid #314F17;
+    }
+
+.btn-primary {
+    color: #ffffff;
+    background-color: #314F9C;
+    border: 0;
+    padding: 8px 20px;   
+}
+
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+        color: #ffffff;
+        background-color: #687AA8;
+    }
+
+#contactButton{
+    justify-content:center;
+    margin-left: 75px;
+}
+
+.jumbotron {
+    padding-top: 35px;
+    padding-bottom: 48px;
+}
+
+

@@ -1,0 +1,130 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "New Rental Form";
+}
+
+<h2>New Rental Form</h2>
+
+<form id="newRental">
+    <div class="form-group">
+        <label>Customer</label>
+        <div class="tt-container"> 
+            <input id="customer" name="customer" type="text" value="" class="form-control" required/>
+        </div>
+    </div>            
+
+    <div class="form-group">
+        <label>Movie</label>
+        <div class="tt-container">
+            <input id="movie" name="movie" type="text" value="" class="form-control"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <ul id="movies" class="list-group"></ul>
+        </div>
+    </div>
+
+    <button class="btn btn-primary">Submit</button>
+</form>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+
+            var vm = {           //Initializing a blank object called vm (for viewmodel). Here we have viewmodel on the client, earlier we saw viewmodel on the server.   
+                movieIds: [] //I added this property & initialized it to an empty array so we can push objects to it.
+            };
+
+                var customers = new Bloodhound({ //Change BestPictures into customers.
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //we change 'value' to 'name' because our customers don't have a property called value.
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                     remote: {
+                            url: '/api/customers?query=%QUERY',
+                            wildcard: '%QUERY' //basically what the user tapes in the txt box, will be placed above in the url at runtime. With this, later, we can filter our customers & return those who match the query. 
+                             }
+                });
+
+            $("#customer").typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                     name: 'customers',
+                    display: 'name',
+                source: customers
+            }).on("typeahead:select", function (e, customer) { //e for the event, & customer which is the selected customer.
+                vm.customerId = customer.id; //Later, when the user submits the form, i'm gonna send this vm to our web API.
+            });
+  
+                var movies = new Bloodhound({ 
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), 
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                     remote: {
+                            url: '/api/movies?query=%QUERY',
+                            wildcard: '%QUERY'  
+                             }
+                });
+
+            $("#movie").typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                     name: 'movies',
+                    display: 'name',
+                source: movies
+            }).on("typeahead:select", function (e, movie) { //so here when we select a movie, we add this movie to our list.
+                $("#movies").append("<Li class='list-group-item'>" + movie.name + "</Li>"); //Here we worked directly with the DOM. In this particular example, this is not too bad! but in more complex applications this may endup being a code smell! that's when we use libraries with frameworks that provide Data Binding.
+
+                $("#movie").typeahead("val", ""); //To clear the txt box after the selection.
+
+                vm.movieIds.push(movie.id); //Later, when the user submits the form, i'm gonna send this vm to our web API.
+            });    
+
+            $.validator.addMethod("validCustomer", function () { //we gave validcustomer as a name to our method.
+                return vm.customerId && vm.customerId !== 0; //here i wanna make sure that our vm has a property called customerId & this customerId has a numeric value that is not 0!
+            }, "Please select a valid customer."); //here optionally we can specify an error msg!
+
+            $.validator.addMethod("atLeastOneMovie", function () {
+                return vm.movieIds.length > 0; //we just check the length of the movieIds array, & if it's > 0, that means we have at least one movie in this array! 
+            }, "Please select at least one movie.");
+
+            var validator = $("#newRental").validate({      //This plugs-in validation into this form!
+                rules: {     //i added this to resolve the UI issue when using data-rule attributes in the input element.
+                         customer: {validCustomer: true}, //customer here is the name of the input --> name="customer".
+                         movie: {atLeastOneMovie: true}
+                        },
+
+                submitHandler: function () { //if the form is valide, this function will be called to submit the form to the server. 
+
+                    //e.preventDefault(); //This will prevent the form from submitting normally. If we don't do this, so we will have a traditionnal HTML form! Instead, we wanna use AJAX.
+                    //Ps: we're gonna use a diff technic to prevent a form from being submited normally! we're gonna return false at the end of this function!
+                    $.ajax({
+                    url: "/api/NewRentals",
+                    method: "post",
+                    data: vm //Here we've got the customerId & movieIds. which looks exactly like our newRentalDto!
+                })
+                    //finally we need to hundle the success & fail senarios.
+                    .done(function () {
+                        toastr.success("Rentals successfully recorded."); //To have the toast notification.
+
+                        $("#customer").typeahead("val", "");
+                        $("#movie").typeahead("val", "");
+                        $("#movies").empty(); //To clear the list of movies selected for one client.
+
+                        vm = { movieIds: [] }; //to reset our vm.
+
+                        validator.resetForm(); //To rest the form in terms of its validation.
+                })
+                    .fail(function () {
+                        toastr.error("Something unexpected happened.");
+                    });
+                    return false; //When submitHandler is called, we immediatly use ajax to call the server! & then return false! & this will prevent the form from being submitted normally!
+                }
+            }); 
+          //  $("#newRental").submit(function (e) {  //we get the element with the id #newRental & hundle the submit event. The callback function takes the (e) for event parameter which represents the submt event.     
+           // });
+        });
+    </script>        
+}

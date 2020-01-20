@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Oussy</h1>
+    <p class="lead">
+        Oussy is a web application that helps managing a rental store. You can have a trace of the customers and the kind of movies they are renting,
+        you can also easily manage your stock of movies and keep an eye of their availabilities, so if you are a store manager, this is THE App!
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>About the Developer</h2>
+        <p>
+            This web application was developed by Oussama FERARMA, using ASP.NET MVC Framework, Web API, Entity Framework, and ASP.Identity Framework.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Thank you Note</h2>
+        <p>OusSmart compagny's team thank you for buying our Oussy web application. Enjoye the entire functionalities. Please contact us if there is any problem.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Contact Info</h2>
+        @using (Html.BeginForm("Contact", "Home"))
+        {
+            <button id="contactButton" type="submit" class="btn btn-primary">Contact</button>
+        }
+    </div>
+</div>
