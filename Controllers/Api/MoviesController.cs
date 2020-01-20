@@ -25,7 +25,7 @@ namespace Vidly.Controllers.Api
         {
             var moviesQuery = _context.Movies
                 .Include(m => m.Genre)
-                .Where(m => m.NumberAvailable > 0); //The Where clause here is to get only the available movies.
+                .Where(m => m.NumberAvailable > 0); 
 
             if (!String.IsNullOrWhiteSpace(query))
                 moviesQuery = moviesQuery.Where(m => m.Name.Contains(query));
