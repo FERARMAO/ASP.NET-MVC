@@ -45,7 +45,7 @@ namespace Vidly.Controllers.Api
 
             _context.SaveChanges();
 
-            return Ok(); //empty () because here we're not creating a single new object! & when using the created method, we need to supply the url to the newly created resource. but in this case we have multiple resources.
+            return Ok(); 
         }
     }
 }
